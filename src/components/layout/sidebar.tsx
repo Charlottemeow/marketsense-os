@@ -1,0 +1,118 @@
+"use client"
+
+import * as React from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
+import {
+  LayoutDashboard,
+  BarChart3,
+  Globe,
+  Newspaper,
+  FileEdit,
+  Search,
+  Briefcase,
+  Settings,
+  PanelLeftClose,
+  PanelLeft,
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+const navItems = [
+  { label: "Home", href: "/", icon: LayoutDashboard },
+  { label: "Dashboard", href: "/dashboard", icon: BarChart3 },
+  { label: "Macro", href: "/macro", icon: Globe },
+  { label: "News", href: "/news", icon: Newspaper },
+  { label: "Notes", href: "/notes", icon: FileEdit },
+  { label: "Deep Dives", href: "/deep-dives", icon: Search },
+  { label: "Pitches", href: "/pitches", icon: Briefcase },
+  { label: "Admin", href: "/admin", icon: Settings },
+]
+
+export function Sidebar() {
+  const pathname = usePathname()
+  const [collapsed, setCollapsed] = React.useState(false)
+
+  return (
+    <aside
+      className={cn(
+        "flex flex-col border-r border-border bg-sidebar h-screen fixed left-0 top-0 z-40 transition-all duration-200",
+        collapsed ? "w-16" : "w-56"
+      )}
+    >
+      <div
+        className={cn(
+          "flex items-center h-12 px-4 border-b border-border",
+          collapsed ? "justify-center" : "justify-between"
+        )}
+      >
+        {!collapsed && (
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-lg font-display text-accent tracking-tight">Market Sense OS</span>
+          </Link>
+        )}
+        {collapsed && (
+          <Link href="/">
+            <span className="text-lg font-display text-accent font-bold">M</span>
+          </Link>
+        )}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setCollapsed(!collapsed)}
+          className="h-6 w-6 text-muted hover:text-foreground"
+        >
+          {collapsed ? (
+            <PanelLeft className="h-4 w-4" />
+          ) : (
+            <PanelLeftClose className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+
+      <nav className="flex-1 py-3 px-2 space-y-1 overflow-y-auto">
+        {navItems.map((item) => {
+          const Icon = item.icon
+          const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors",
+                collapsed && "justify-center px-2",
+                isActive
+                  ? "bg-accent/10 text-accent font-medium"
+                  : "text-muted hover:text-foreground hover:bg-card-hover"
+              )}
+            >
+              <Icon className={cn("h-4 w-4 shrink-0", isActive && "text-accent")} />
+              {!collapsed && <span>{item.label}</span>}
+            </Link>
+          )
+        })}
+      </nav>
+
+      <div className="p-3 border-t border-border">
+        {!collapsed ? (
+          <Link
+            href="/disclaimer"
+            className="block text-xs text-muted hover:text-foreground transition-colors text-center"
+          >
+            Disclaimer
+          </Link>
+        ) : (
+          <div className="flex justify-center">
+            <Link
+              href="/disclaimer"
+              className="text-xs text-muted hover:text-foreground transition-colors"
+              title="Disclaimer"
+            >
+              ⚖
+            </Link>
+          </div>
+        )}
+      </div>
+    </aside>
+  )
+}

@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --radius: 6px;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #0a0e17;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1E293B;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+  }
+}
+
+@layer components {
+  .card-glow {
+    border: 1px solid #1E293B;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card-glow:hover {
+    border-color: #334155;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.04);
+  }
+
+  .data-cell {
+    @apply font-mono text-data-sm tabular-nums;
+  }
+
+  .positive {
+    color: #22C55E;
+  }
+
+  .negative {
+    color: #EF4444;
+  }
+
+  .neutral {
+    color: #64748B;
+  }
+
+  .stale-data {
+    @apply relative;
+  }
+
+  .stale-data::after {
+    content: '';
+    @apply absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-warning;
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

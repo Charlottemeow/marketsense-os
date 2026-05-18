@@ -1,0 +1,20 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/us-market",
+      "schedule": "30 22 * * 1-5"
+    },
+    {
+      "path": "/api/cron/asia-market",
+      "schedule": "15 9 * * 1-5"
+    },
+    {
+      "path": "/api/cron/macro-data",
+      "schedule": "0 23 * * 1-5"
+    },
+    {
+      "path": "/api/cron/news",
+      "schedule": "0 */1 * * *"
+    }
+  ]
+}
