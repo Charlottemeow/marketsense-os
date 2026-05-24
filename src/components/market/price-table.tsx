@@ -3,6 +3,7 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import { MiniSparkline } from "@/components/market/mini-sparkline"
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react"
 
@@ -32,15 +33,15 @@ const mockData: AssetRow[] = [
   { ticker: "HYG", name: "iShares High Yield Corp", price: 76.50, dailyChg: 0.22, week1Chg: 0.40, month1Chg: 0.85, ytdChg: 3.10, high52wDistance: 1.5, sparklineData: [76, 76.1, 76.3, 76.2, 76.3, 76.4, 76.5], lastUpdated: "5 min ago" },
 ]
 
-const columns: { key: SortKey; label: string; className?: string }[] = [
-  { key: "ticker", label: "Ticker", className: "w-20" },
-  { key: "ticker", label: "Name", className: "min-w-[180px]" },
-  { key: "price", label: "Price", className: "w-24 text-right" },
-  { key: "dailyChg", label: "Daily Chg%", className: "w-24 text-right" },
-  { key: "week1Chg", label: "1W%", className: "w-20 text-right" },
-  { key: "month1Chg", label: "1M%", className: "w-20 text-right" },
-  { key: "ytdChg", label: "YTD%", className: "w-20 text-right" },
-  { key: "high52wDistance", label: "52W High", className: "w-24 text-right" },
+const columns: { key: SortKey; labelKey: string; className?: string }[] = [
+  { key: "ticker", labelKey: "market.ticker", className: "w-20" },
+  { key: "ticker", labelKey: "market.name", className: "min-w-[180px]" },
+  { key: "price", labelKey: "market.price", className: "w-24 text-right" },
+  { key: "dailyChg", labelKey: "market.dailyChg", className: "w-24 text-right" },
+  { key: "week1Chg", labelKey: "market.weeklyChg", className: "w-20 text-right" },
+  { key: "month1Chg", labelKey: "market.monthlyChg", className: "w-20 text-right" },
+  { key: "ytdChg", labelKey: "market.ytdChg", className: "w-20 text-right" },
+  { key: "high52wDistance", labelKey: "market.52wHigh", className: "w-24 text-right" },
 ]
 
 function ChangeCell({ value }: { value: number }) {
@@ -62,6 +63,7 @@ function SortIcon({ sortKey, currentKey, direction }: { sortKey: SortKey; curren
 }
 
 export function PriceTable() {
+  const { t } = useLanguage()
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortDir, setSortDir] = useState<SortDir>("asc")
 
@@ -90,7 +92,7 @@ export function PriceTable() {
             <tr className="border-b border-border">
               {columns.map((col) => (
                 <th
-                  key={col.label}
+                  key={col.labelKey}
                   className={cn(
                     "px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider",
                     "cursor-pointer select-none hover:text-foreground transition-colors",
@@ -99,7 +101,7 @@ export function PriceTable() {
                   onClick={() => handleSort(col.key)}
                 >
                   <div className="flex items-center gap-1 justify-end">
-                    {col.label}
+                    {t(col.labelKey)}
                     <SortIcon sortKey={col.key} currentKey={sortKey} direction={sortDir} />
                   </div>
                 </th>
@@ -108,7 +110,7 @@ export function PriceTable() {
                 Chart
               </th>
               <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider w-28 text-right">
-                Updated
+                {t('market.lastUpdated')}
               </th>
             </tr>
           </thead>

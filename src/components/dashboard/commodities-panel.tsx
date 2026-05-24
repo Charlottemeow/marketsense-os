@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 
 interface CommodityItem {
   label: string
@@ -35,10 +38,12 @@ function CommodityCard({ item }: { item: CommodityItem }) {
 }
 
 export function CommoditiesPanel() {
+  const { t } = useLanguage()
+
   return (
     <div>
       <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-        Commodities
+        {t('home.commodities')}
       </h3>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {mockCommodities.map((item) => (

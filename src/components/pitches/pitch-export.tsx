@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import { FileText, Copy, Check, ArrowLeft } from 'lucide-react'
 
 interface PitchData {
@@ -28,6 +29,7 @@ interface PitchExportProps {
 }
 
 export default function PitchExport({ data, onBack }: PitchExportProps) {
+  const { t } = useLanguage()
   const [scriptLength, setScriptLength] = useState<'short' | 'medium' | 'long'>('medium')
   const [copied, setCopied] = useState(false)
 
@@ -120,12 +122,12 @@ export default function PitchExport({ data, onBack }: PitchExportProps) {
           className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to edit
+          {t('pitch.back')}
         </button>
       </div>
 
       <div className="flex items-center gap-3">
-        <span className="text-sm text-muted">Pitch script length:</span>
+        <span className="text-sm text-muted">{t('pitch.script3min')}:</span>
         <div className="flex gap-1">
           {(['short', 'medium', 'long'] as const).map(length => (
             <button
@@ -158,7 +160,7 @@ export default function PitchExport({ data, onBack }: PitchExportProps) {
           className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
         >
           {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-          {copied ? 'Copied!' : 'Copy Markdown'}
+          {copied ? t('common.save') : t('pitch.exportMarkdown')}
         </button>
         <button
           type="button"
@@ -166,7 +168,7 @@ export default function PitchExport({ data, onBack }: PitchExportProps) {
           className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border text-foreground rounded-md text-sm font-medium hover:bg-card-hover transition-colors"
         >
           <FileText className="w-4 h-4" />
-          Download .md
+          {t('pitch.exportMarkdown')}
         </button>
       </div>
     </div>

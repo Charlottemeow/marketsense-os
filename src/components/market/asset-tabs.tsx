@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import * as Tabs from "@radix-ui/react-tabs"
 
 interface AssetTabsProps {
@@ -8,15 +11,17 @@ interface AssetTabsProps {
 }
 
 const tabs = [
-  { id: "equity", label: "Equity" },
-  { id: "rates", label: "Rates" },
-  { id: "fx", label: "FX" },
-  { id: "commodity", label: "Commodity" },
-  { id: "crypto", label: "Crypto" },
-  { id: "hk-china", label: "HK/China" },
+  { id: "equity", labelKey: "market.equity" },
+  { id: "rates", labelKey: "market.rates" },
+  { id: "fx", labelKey: "market.fx" },
+  { id: "commodity", labelKey: "market.commodity" },
+  { id: "crypto", labelKey: "market.crypto" },
+  { id: "hk-china", labelKey: "market.hkChina" },
 ]
 
 export function AssetTabs({ activeTab, onTabChange }: AssetTabsProps) {
+  const { t } = useLanguage()
+
   return (
     <Tabs.Root value={activeTab} onValueChange={onTabChange}>
       <Tabs.List className="flex gap-1 border-b border-border">
@@ -33,7 +38,7 @@ export function AssetTabs({ activeTab, onTabChange }: AssetTabsProps) {
               "data-[state=active]:after:scale-x-100"
             )}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </Tabs.Trigger>
         ))}
       </Tabs.List>

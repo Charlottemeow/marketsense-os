@@ -2,6 +2,7 @@
 
 import { useState, use } from 'react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/context'
 import DeepDiveForm from '@/components/deep-dives/deep-dive-form'
 import { ArrowLeft } from 'lucide-react'
 
@@ -21,6 +22,7 @@ const MOCK_DEEP_DIVE = {
 }
 
 export default function DeepDivePage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useLanguage()
   const resolved = use(params)
   const [isSaving, setIsSaving] = useState(false)
 
@@ -39,9 +41,9 @@ export default function DeepDivePage({ params }: { params: Promise<{ id: string 
           className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to deep dives
+          {t('dive.back')}
         </Link>
-        <h1 className="text-2xl font-display text-foreground mt-2">Deep Dive: {MOCK_DEEP_DIVE.title}</h1>
+        <h1 className="text-2xl font-display text-foreground mt-2">{t('dive.edit')}: {MOCK_DEEP_DIVE.title}</h1>
         <p className="text-sm text-muted mt-1">ID: {resolved.id}</p>
       </div>
 

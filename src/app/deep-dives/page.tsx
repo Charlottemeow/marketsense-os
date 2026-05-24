@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/context'
 import DeepDiveCard from '@/components/deep-dives/deep-dive-card'
 import { Plus } from 'lucide-react'
 
@@ -36,11 +37,12 @@ const MOCK_DEEP_DIVES = [
 ]
 
 export default function DeepDivesPage() {
+  const { t } = useLanguage()
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-display text-foreground">Deep Dives</h1>
+          <h1 className="text-2xl font-display text-foreground">{t('dive.title')}</h1>
           <p className="text-sm text-muted mt-1">In-depth analysis of market events and themes</p>
         </div>
         <Link
@@ -48,7 +50,7 @@ export default function DeepDivesPage() {
           className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
         >
           <Plus className="w-4 h-4" />
-          New Deep Dive
+          {t('dive.new')}
         </Link>
       </div>
 

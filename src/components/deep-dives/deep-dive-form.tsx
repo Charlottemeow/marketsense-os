@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useLanguage } from '@/lib/i18n/context'
 import { Save, Loader2 } from 'lucide-react'
 
 interface DeepDiveData {
@@ -24,20 +25,20 @@ interface DeepDiveFormProps {
   isSaving?: boolean
 }
 
-const fields = [
-  { key: 'title', label: 'Title', rows: 1, placeholder: 'e.g., Deconstructing the Aug 2024 Sell-off' },
-  { key: 'eventDescription', label: 'Event description', rows: 3, placeholder: 'e.g., Broad market sell-off triggered by weaker-than-expected ISM manufacturing data...' },
-  { key: 'firstOrderCause', label: 'First-order cause', rows: 2, placeholder: 'e.g., ISM Manufacturing PMI printed 46.8 vs 48.5 expected, triggering growth scare...' },
-  { key: 'secondOrderCause', label: 'Second-order cause', rows: 2, placeholder: 'e.g., Stop losses in systematic strategies cascaded, VIX spiked above 30...' },
-  { key: 'crossAssetReaction', label: 'Cross-asset reaction', rows: 3, placeholder: 'e.g., SPX -2.1%, 10Y yield -12bps, DXY -0.5%, Gold +1.2%...' },
-  { key: 'marketPriceIn', label: 'Market price-in', rows: 2, placeholder: 'e.g., Market now pricing 60% chance of 50bp cut in September...' },
-  { key: 'baseCase', label: 'Base case', rows: 3, placeholder: 'e.g., This is a growth scare, not a recession. Fed delivers 25bp cut...' },
-  { key: 'bullCase', label: 'Bull case', rows: 2, placeholder: 'e.g., Soft landing intact, dip buying opportunity, V-shaped recovery...' },
-  { key: 'bearCase', label: 'Bear case', rows: 2, placeholder: 'e.g., This is the start of a recession, more downside to come...' },
-  { key: 'verificationPlan', label: 'Verification plan', rows: 2, placeholder: 'e.g., Watch jobless claims Thursday, if they spike above 250k, bear case gains credibility...' },
+const textareaFields = [
+  { key: 'eventDescription', labelKey: 'dive.eventDesc', placeholderKey: 'dive.placeholderEvent', rows: 3 },
+  { key: 'firstOrderCause', labelKey: 'dive.firstOrder', placeholderKey: 'dive.placeholderFirst', rows: 2 },
+  { key: 'secondOrderCause', labelKey: 'dive.secondOrder', placeholderKey: 'dive.placeholderSecond', rows: 2 },
+  { key: 'crossAssetReaction', labelKey: 'dive.crossAsset', placeholderKey: 'dive.placeholderEvent', rows: 3 },
+  { key: 'marketPriceIn', labelKey: 'dive.marketPriceIn', placeholderKey: 'dive.placeholderEvent', rows: 2 },
+  { key: 'baseCase', labelKey: 'dive.baseCase', placeholderKey: 'dive.placeholderEvent', rows: 3 },
+  { key: 'bullCase', labelKey: 'dive.bullCase', placeholderKey: 'dive.placeholderEvent', rows: 2 },
+  { key: 'bearCase', labelKey: 'dive.bearCase', placeholderKey: 'dive.placeholderEvent', rows: 2 },
+  { key: 'verificationPlan', labelKey: 'dive.verification', placeholderKey: 'dive.placeholderEvent', rows: 2 },
 ]
 
 export default function DeepDiveForm({ existingDive, onSave, isSaving }: DeepDiveFormProps) {
+  const { t } = useLanguage()
   const today = new Date().toISOString().split('T')[0]
   const [form, setForm] = useState({
     title: existingDive?.title ?? '',
@@ -65,18 +66,18 @@ export default function DeepDiveForm({ existingDive, onSave, isSaving }: DeepDiv
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1.5">{t('dive.topicTitle')}</label>
         <input
           type="text"
           value={form.title}
           onChange={e => handleChange('title', e.target.value)}
-          placeholder="e.g., Deconstructing the Aug 2024 Sell-off"
+          placeholder={t('dive.placeholderTitle')}
           className="w-full bg-card border border-border rounded-md px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-accent"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">Date</label>
+        <label className="block text-sm font-medium text-foreground mb-1.5">{t('dive.date')}</label>
         <input
           type="date"
           value={form.date}
@@ -85,13 +86,13 @@ export default function DeepDiveForm({ existingDive, onSave, isSaving }: DeepDiv
         />
       </div>
 
-      {fields.slice(2).map(f => (
+      {textareaFields.map(f => (
         <div key={f.key}>
-          <label className="block text-sm font-medium text-foreground mb-1.5">{f.label}</label>
+          <label className="block text-sm font-medium text-foreground mb-1.5">{t(f.labelKey)}</label>
           <textarea
             value={form[f.key as keyof typeof form] as string}
             onChange={e => handleChange(f.key, e.target.value)}
-            placeholder={f.placeholder}
+            placeholder={t(f.placeholderKey)}
             rows={f.rows}
             className="w-full bg-card border border-border rounded-md px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-accent resize-none"
           />
@@ -104,7 +105,7 @@ export default function DeepDiveForm({ existingDive, onSave, isSaving }: DeepDiv
         className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
       >
         {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-        {isSaving ? 'Saving...' : 'Save Deep Dive'}
+        {isSaving ? t('common.loading') : t('dive.save')}
       </button>
     </form>
   )

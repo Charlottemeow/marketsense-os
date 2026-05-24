@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 
 interface CalendarEvent {
   date: string
@@ -37,6 +40,13 @@ function getCountryFlag(country: string): string {
 }
 
 export function EconomicCalendarTable() {
+  const { t } = useLanguage()
+
+  const importanceLabel = (imp: "high" | "medium" | "low"): string => {
+    const map = { high: t('importance.high'), medium: t('importance.medium'), low: t('importance.low') }
+    return map[imp]
+  }
+
   return (
     <div className="rounded-lg border border-border bg-card overflow-hidden">
       <div className="overflow-x-auto">
@@ -44,13 +54,13 @@ export function EconomicCalendarTable() {
           <thead>
             <tr className="border-b border-border">
               <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-left w-24">Date</th>
-              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-left w-20">Time</th>
+              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-left w-20">{t('home.eventTime')}</th>
               <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-left w-12">Ctry</th>
-              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-left">Event</th>
-              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-center w-20">Imp</th>
-              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-right w-24">Actual</th>
-              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-right w-24">Forecast</th>
-              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-right w-24">Previous</th>
+              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-left">{t('home.eventName')}</th>
+              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-center w-20">{t('home.importance')}</th>
+              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-right w-24">{t('home.actual')}</th>
+              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-right w-24">{t('home.forecast')}</th>
+              <th className="px-3 py-3 text-data-xs text-muted font-medium uppercase tracking-wider text-right w-24">{t('home.previous')}</th>
             </tr>
           </thead>
           <tbody>
@@ -72,7 +82,7 @@ export function EconomicCalendarTable() {
                       importanceStyles[evt.importance]
                     )}
                   >
-                    {evt.importance}
+                    {importanceLabel(evt.importance)}
                   </span>
                 </td>
                 <td className="px-3 py-3 text-data-sm text-foreground text-right tabular-nums">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import { RefreshCw, Loader2 } from 'lucide-react'
 
 interface RefreshButtonProps {
@@ -11,8 +12,11 @@ interface RefreshButtonProps {
   size?: 'sm' | 'md'
 }
 
-export default function RefreshButton({ providerId, label = 'Refresh', onRefresh, size = 'sm' }: RefreshButtonProps) {
+export default function RefreshButton({ providerId, label, onRefresh, size = 'sm' }: RefreshButtonProps) {
+  const { t } = useLanguage()
   const [loading, setLoading] = useState(false)
+
+  const displayLabel = label ?? t('admin.refreshNow')
 
   const handleClick = async () => {
     setLoading(true)
@@ -52,7 +56,7 @@ export default function RefreshButton({ providerId, label = 'Refresh', onRefresh
       ) : (
         <RefreshCw className={cn(size === 'sm' ? 'w-3 h-3' : 'w-4 h-4')} />
       )}
-      {loading ? 'Refreshing...' : label}
+      {loading ? t('common.loading') : displayLabel}
     </button>
   )
 }

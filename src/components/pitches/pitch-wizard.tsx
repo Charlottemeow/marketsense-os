@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import StepIndicator from './step-indicator'
 import PitchExport from './pitch-export'
 import { Save, Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
@@ -31,51 +32,52 @@ interface PitchWizardProps {
   isSaving?: boolean
 }
 
-const stepFields: { key: keyof PitchData; label: string; type: 'text' | 'textarea' | 'select'; placeholder?: string; options?: { value: string; label: string }[] }[][] = [
+const stepFields: { key: keyof PitchData; labelKey: string; type: 'text' | 'textarea' | 'select'; placeholderKey?: string; options?: { value: string; labelKey: string }[] }[][] = [
   [
-    { key: 'companyName', label: 'Company name', type: 'text', placeholder: 'e.g., Apple Inc.' },
-    { key: 'ticker', label: 'Ticker', type: 'text', placeholder: 'e.g., AAPL' },
-    { key: 'sector', label: 'Sector', type: 'text', placeholder: 'e.g., Technology' },
-    { key: 'currentPrice', label: 'Current price', type: 'text', placeholder: 'e.g., $185.50' },
+    { key: 'companyName', labelKey: 'pitch.companyName', type: 'text' },
+    { key: 'ticker', labelKey: 'pitch.ticker', type: 'text' },
+    { key: 'sector', labelKey: 'pitch.sector', type: 'text' },
+    { key: 'currentPrice', labelKey: 'pitch.currentPrice', type: 'text' },
   ],
   [
-    { key: 'recommendation', label: 'Recommendation', type: 'select', options: [
-      { value: 'Long', label: 'Long / Buy' },
-      { value: 'Short', label: 'Short / Sell' },
-      { value: 'Hold', label: 'Hold / Neutral' },
+    { key: 'recommendation', labelKey: 'pitch.recommendation', type: 'select', options: [
+      { value: 'Long', labelKey: 'pitch.long' },
+      { value: 'Short', labelKey: 'pitch.short' },
+      { value: 'Hold', labelKey: 'pitch.neutral' },
     ]},
-    { key: 'targetPrice', label: 'Target price', type: 'text', placeholder: 'e.g., $220.00' },
-    { key: 'timeHorizon', label: 'Time horizon', type: 'text', placeholder: 'e.g., 6-12 months' },
+    { key: 'targetPrice', labelKey: 'pitch.targetPrice', type: 'text' },
+    { key: 'timeHorizon', labelKey: 'pitch.timeHorizon', type: 'text' },
   ],
   [
-    { key: 'marketNarrative', label: 'Market narrative', type: 'textarea', placeholder: 'e.g., The market is underestimating the company\'s margin expansion potential...' },
+    { key: 'marketNarrative', labelKey: 'pitch.consensusView', type: 'textarea' },
   ],
   [
-    { key: 'variantViewBull', label: 'Variant view — Bull case', type: 'textarea', placeholder: 'e.g., AI adoption drives upside to estimates...' },
-    { key: 'variantViewBear', label: 'Variant view — Bear case', type: 'textarea', placeholder: 'e.g., Competition erodes market share faster than expected...' },
+    { key: 'variantViewBull', labelKey: 'pitch.iBelieve', type: 'textarea' },
+    { key: 'variantViewBear', labelKey: 'pitch.evidence', type: 'textarea' },
   ],
   [
-    { key: 'investmentThesis', label: 'Investment thesis', type: 'textarea', placeholder: 'e.g., We believe the company is well-positioned to benefit from...' },
+    { key: 'investmentThesis', labelKey: 'pitch.oneLineThesis', type: 'textarea' },
   ],
   [
-    { key: 'valuationMethodology', label: 'Valuation methodology', type: 'select', options: [
-      { value: 'DCF', label: 'DCF Analysis' },
-      { value: 'Comps', label: 'Comparable Company Analysis' },
-      { value: 'LBO', label: 'LBO Analysis' },
-      { value: 'SOTP', label: 'Sum of the Parts' },
-      { value: 'Other', label: 'Other' },
+    { key: 'valuationMethodology', labelKey: 'pitch.tradingComps', type: 'select', options: [
+      { value: 'DCF', labelKey: 'pitch.dcfSummary' },
+      { value: 'Comps', labelKey: 'pitch.tradingComps' },
+      { value: 'LBO', labelKey: 'pitch.dcfSummary' },
+      { value: 'SOTP', labelKey: 'pitch.targetPriceLogic' },
+      { value: 'Other', labelKey: 'pitch.targetPriceLogic' },
     ]},
-    { key: 'valuationAnalysis', label: 'Valuation analysis', type: 'textarea', placeholder: 'e.g., DCF implies 20% upside assuming 10% CAGR...' },
+    { key: 'valuationAnalysis', labelKey: 'pitch.targetPriceLogic', type: 'textarea' },
   ],
   [
-    { key: 'catalysts', label: 'Catalysts', type: 'textarea', placeholder: 'e.g., Upcoming product launch, earnings beat, buyback authorization...' },
+    { key: 'catalysts', labelKey: 'pitch.catalysts', type: 'textarea' },
   ],
   [
-    { key: 'risks', label: 'Risks', type: 'textarea', placeholder: 'e.g., Regulatory risk, macroeconomic headwinds, competitive pressure...' },
+    { key: 'risks', labelKey: 'pitch.risks', type: 'textarea' },
   ],
 ]
 
 export default function PitchWizard({ existingPitch, onSave, isSaving }: PitchWizardProps) {
+  const { t } = useLanguage()
   const [step, setStep] = useState(1)
   const [form, setForm] = useState<PitchData>({
     companyName: existingPitch?.companyName ?? '',
@@ -117,17 +119,16 @@ export default function PitchWizard({ existingPitch, onSave, isSaving }: PitchWi
 
       <div className="bg-card border border-border rounded-lg p-6 space-y-4 animate-fade-in">
         <h2 className="text-lg font-semibold text-foreground">
-          Step {step}: {fields[0]?.label.replace(/ *—.*$/, '')}
+          {t('pitch.step')} {step}: {t(fields[0]?.labelKey.replace(/ —.*$/, ''))}
         </h2>
 
         {fields.map(f => (
           <div key={f.key}>
-            <label className="block text-sm font-medium text-foreground mb-1.5">{f.label}</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">{t(f.labelKey)}</label>
             {f.type === 'textarea' ? (
               <textarea
                 value={form[f.key] as string}
                 onChange={e => handleChange(f.key, e.target.value)}
-                placeholder={f.placeholder}
                 rows={5}
                 className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-accent resize-none"
               />
@@ -138,7 +139,7 @@ export default function PitchWizard({ existingPitch, onSave, isSaving }: PitchWi
                 className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
               >
                 {f.options?.map(o => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
+                  <option key={o.value} value={o.value}>{t(o.labelKey)}</option>
                 ))}
               </select>
             ) : (
@@ -146,7 +147,6 @@ export default function PitchWizard({ existingPitch, onSave, isSaving }: PitchWi
                 type="text"
                 value={form[f.key] as string}
                 onChange={e => handleChange(f.key, e.target.value)}
-                placeholder={f.placeholder}
                 className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-accent"
               />
             )}
@@ -162,7 +162,7 @@ export default function PitchWizard({ existingPitch, onSave, isSaving }: PitchWi
           className="inline-flex items-center gap-2 px-4 py-2 text-sm text-foreground bg-card border border-border rounded-md hover:bg-card-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ChevronLeft className="w-4 h-4" />
-          Previous
+          {t('pitch.prev')}
         </button>
 
         <div className="flex items-center gap-3">
@@ -182,7 +182,7 @@ export default function PitchWizard({ existingPitch, onSave, isSaving }: PitchWi
             ) : (
               <ChevronRight className="w-4 h-4" />
             )}
-            {step === totalSteps - 1 ? (isSaving ? 'Saving...' : 'Save Pitch') : 'Next'}
+            {step === totalSteps - 1 ? (isSaving ? t('common.loading') : t('pitch.save')) : t('pitch.next')}
           </button>
         </div>
       </div>

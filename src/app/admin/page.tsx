@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import ProviderStatusPanel from '@/components/admin/provider-status-panel'
 import UpdateLogs from '@/components/admin/update-logs'
 import RefreshButton from '@/components/admin/refresh-button'
@@ -32,6 +33,7 @@ const MOCK_LOGS = [
 ]
 
 export default function AdminPage() {
+  const { t } = useLanguage()
   const [rssFeedsConfig] = useState([
     { id: '1', url: 'https://feeds.ft.com/ft/news', enabled: true },
     { id: '2', url: 'https://www.wsj.com/xml/rss/3_7085.xml', enabled: true },
@@ -56,7 +58,7 @@ export default function AdminPage() {
       <div className="flex items-center gap-3 mb-6">
         <Settings className="w-6 h-6 text-accent" />
         <div>
-          <h1 className="text-2xl font-display text-foreground">Admin</h1>
+          <h1 className="text-2xl font-display text-foreground">{t('admin.title')}</h1>
           <p className="text-sm text-muted mt-1">System monitoring and configuration</p>
         </div>
       </div>
@@ -65,7 +67,7 @@ export default function AdminPage() {
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
             <Radio className="w-5 h-5 text-accent" />
-            <h2 className="text-base font-semibold text-foreground">Provider Status</h2>
+            <h2 className="text-base font-semibold text-foreground">{t('admin.providerStatus')}</h2>
           </div>
           <ProviderStatusPanel providers={MOCK_PROVIDERS} />
         </div>
@@ -73,7 +75,7 @@ export default function AdminPage() {
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
             <Activity className="w-5 h-5 text-accent" />
-            <h2 className="text-base font-semibold text-foreground">Update Logs</h2>
+            <h2 className="text-base font-semibold text-foreground">{t('admin.updateLogs')}</h2>
           </div>
           <UpdateLogs logs={MOCK_LOGS} />
         </div>
@@ -83,7 +85,7 @@ export default function AdminPage() {
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
             <Database className="w-5 h-5 text-accent" />
-            <h2 className="text-base font-semibold text-foreground">RSS Configuration</h2>
+            <h2 className="text-base font-semibold text-foreground">{t('admin.rssConfig')}</h2>
           </div>
           <div className="space-y-3">
             {rssFeedsConfig.map(feed => (
@@ -109,7 +111,7 @@ export default function AdminPage() {
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
             <Activity className="w-5 h-5 text-accent" />
-            <h2 className="text-base font-semibold text-foreground">Watchlist Config</h2>
+            <h2 className="text-base font-semibold text-foreground">{t('admin.watchlistConfig')}</h2>
           </div>
           <div className="space-y-3">
             {watchlist.map(item => (

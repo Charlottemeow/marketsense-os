@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import { TrendingUp, TrendingDown } from "lucide-react"
 
 interface Mover {
@@ -54,16 +57,18 @@ function MoverRow({ mover, isGainer }: { mover: Mover; isGainer: boolean }) {
 }
 
 export function TopMovers() {
+  const { t } = useLanguage()
+
   return (
     <div>
       <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-        Top Movers
+        {t('home.topMovers')}
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="rounded-lg border border-border bg-card p-3 card-glow">
           <div className="flex items-center gap-1.5 mb-2 px-1">
             <TrendingUp className="w-3.5 h-3.5 text-positive" />
-            <span className="text-xs font-semibold text-positive">Top Gainers</span>
+            <span className="text-xs font-semibold text-positive">{t('home.topGainers')}</span>
           </div>
           {mockGainers.map((mover) => (
             <MoverRow key={mover.ticker} mover={mover} isGainer />
@@ -72,7 +77,7 @@ export function TopMovers() {
         <div className="rounded-lg border border-border bg-card p-3 card-glow">
           <div className="flex items-center gap-1.5 mb-2 px-1">
             <TrendingDown className="w-3.5 h-3.5 text-negative" />
-            <span className="text-xs font-semibold text-negative">Top Losers</span>
+            <span className="text-xs font-semibold text-negative">{t('home.topLosers')}</span>
           </div>
           {mockLosers.map((mover) => (
             <MoverRow key={mover.ticker} mover={mover} isGainer={false} />

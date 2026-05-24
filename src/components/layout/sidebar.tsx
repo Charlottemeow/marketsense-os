@@ -4,6 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import {
   LayoutDashboard,
   BarChart3,
@@ -15,23 +16,25 @@ import {
   Settings,
   PanelLeftClose,
   PanelLeft,
+  Languages,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
-  { label: "Home", href: "/", icon: LayoutDashboard },
-  { label: "Dashboard", href: "/dashboard", icon: BarChart3 },
-  { label: "Macro", href: "/macro", icon: Globe },
-  { label: "News", href: "/news", icon: Newspaper },
-  { label: "Notes", href: "/notes", icon: FileEdit },
-  { label: "Deep Dives", href: "/deep-dives", icon: Search },
-  { label: "Pitches", href: "/pitches", icon: Briefcase },
-  { label: "Admin", href: "/admin", icon: Settings },
+  { key: "nav.home", href: "/", icon: LayoutDashboard },
+  { key: "nav.dashboard", href: "/dashboard", icon: BarChart3 },
+  { key: "nav.macro", href: "/macro", icon: Globe },
+  { key: "nav.news", href: "/news", icon: Newspaper },
+  { key: "nav.notes", href: "/notes", icon: FileEdit },
+  { key: "nav.deepDives", href: "/deep-dives", icon: Search },
+  { key: "nav.pitches", href: "/pitches", icon: Briefcase },
+  { key: "nav.admin", href: "/admin", icon: Settings },
 ]
 
 export function Sidebar() {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = React.useState(false)
+  const { t, lang, setLang } = useLanguage()
 
   return (
     <aside
@@ -87,11 +90,25 @@ export function Sidebar() {
               )}
             >
               <Icon className={cn("h-4 w-4 shrink-0", isActive && "text-accent")} />
-              {!collapsed && <span>{item.label}</span>}
+              {!collapsed && <span>{t(item.key)}</span>}
             </Link>
           )
         })}
       </nav>
+
+      <div className="px-3 py-2 border-t border-border">
+        <button
+          onClick={() => setLang(lang === "en" ? "zh-CN" : "en")}
+          className={cn(
+            "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors w-full",
+            collapsed && "justify-center px-2",
+            "text-muted hover:text-foreground hover:bg-card-hover"
+          )}
+        >
+          <Languages className="h-4 w-4 shrink-0" />
+          {!collapsed && <span>{t("lang.switch")}</span>}
+        </button>
+      </div>
 
       <div className="p-3 border-t border-border">
         {!collapsed ? (
@@ -99,14 +116,14 @@ export function Sidebar() {
             href="/disclaimer"
             className="block text-xs text-muted hover:text-foreground transition-colors text-center"
           >
-            Disclaimer
+            {t("app.disclaimer")}
           </Link>
         ) : (
           <div className="flex justify-center">
             <Link
               href="/disclaimer"
               className="text-xs text-muted hover:text-foreground transition-colors"
-              title="Disclaimer"
+              title={t("app.disclaimer")}
             >
               ⚖
             </Link>

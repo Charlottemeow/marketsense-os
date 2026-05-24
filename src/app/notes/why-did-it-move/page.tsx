@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/context'
 import WhyMoveForm from '@/components/notes/why-move-form'
 import { ArrowLeft } from 'lucide-react'
 
@@ -35,6 +36,7 @@ const MOCK_ENTRIES = [
 ]
 
 export default function WhyDidItMovePage() {
+  const { t } = useLanguage()
   const [isSaving, setIsSaving] = useState(false)
 
   const handleSave = async (entry: any) => {
@@ -52,9 +54,9 @@ export default function WhyDidItMovePage() {
           className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to notes
+          {t('whymove.backToNotes')}
         </Link>
-        <h1 className="text-2xl font-display text-foreground mt-2">Why Did It Move</h1>
+        <h1 className="text-2xl font-display text-foreground mt-2">{t('whymove.title')}</h1>
         <p className="text-sm text-muted mt-1">Deconstruct individual asset price moves</p>
       </div>
 

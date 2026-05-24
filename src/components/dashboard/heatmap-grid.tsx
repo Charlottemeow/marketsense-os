@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 
 interface HeatmapCell {
   category: string
@@ -56,10 +59,12 @@ function HeatmapCell({ cell }: { cell: HeatmapCell }) {
 }
 
 export function HeatmapGrid() {
+  const { t } = useLanguage()
+
   return (
     <div>
       <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-        Cross-Asset Heatmap
+        {t('home.crossAssetHeatmap')}
       </h3>
       <div className="grid grid-cols-4 sm:grid-cols-5 gap-1.5">
         {mockHeatmapData.map((cell) => (

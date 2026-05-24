@@ -1,6 +1,7 @@
 // MOCK DATA FOR DEVELOPMENT
 "use client"
 
+import { useLanguage } from "@/lib/i18n/context"
 import {
   LineChart,
   Line,
@@ -28,10 +29,12 @@ const mockYieldData = [
 ]
 
 export function YieldCurveChart() {
+  const { t } = useLanguage()
+
   return (
     <div className="rounded-lg border border-border bg-card p-4 card-glow">
       <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-        Yield Curve — 2Y vs 10Y
+        {t('macro.yieldCurve')} — {t('macro.2y')} vs {t('macro.10y')}
       </h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -69,7 +72,7 @@ export function YieldCurveChart() {
               type="monotone"
               dataKey="yield2y"
               stroke="#00D4FF"
-              name="2Y Yield"
+              name={t('macro.2y')}
               strokeWidth={1.5}
               dot={false}
               activeDot={{ r: 3, strokeWidth: 0 }}
@@ -78,7 +81,7 @@ export function YieldCurveChart() {
               type="monotone"
               dataKey="yield10y"
               stroke="#FFB347"
-              name="10Y Yield"
+              name={t('macro.10y')}
               strokeWidth={1.5}
               dot={false}
               activeDot={{ r: 3, strokeWidth: 0 }}

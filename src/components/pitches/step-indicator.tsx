@@ -1,18 +1,19 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import { Check } from 'lucide-react'
 
 const STEPS = [
-  'Company Snapshot',
-  'Recommendation',
-  'Market Narrative',
-  'Variant View',
-  'Investment Thesis',
-  'Valuation',
-  'Catalysts',
-  'Risks',
-  'Export',
+  'pitch.step1',
+  'pitch.step2',
+  'pitch.step3',
+  'pitch.step4',
+  'pitch.step5',
+  'pitch.step6',
+  'pitch.step7',
+  'pitch.step8',
+  'pitch.step9',
 ]
 
 interface StepIndicatorProps {
@@ -21,16 +22,18 @@ interface StepIndicatorProps {
 }
 
 export default function StepIndicator({ currentStep, onStepClick }: StepIndicatorProps) {
+  const { t } = useLanguage()
+
   return (
     <div className="flex items-center gap-1">
-      {STEPS.map((label, i) => {
+      {STEPS.map((labelKey, i) => {
         const stepNum = i + 1
         const isCompleted = stepNum < currentStep
         const isCurrent = stepNum === currentStep
         const isClickable = isCompleted || isCurrent
 
         return (
-          <div key={label} className="flex items-center gap-1 flex-1">
+          <div key={labelKey} className="flex items-center gap-1 flex-1">
             <button
               type="button"
               disabled={!isClickable}

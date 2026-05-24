@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import { Save, Loader2 } from 'lucide-react'
 
 interface DailyNote {
@@ -23,15 +24,16 @@ interface DailyNoteFormProps {
 }
 
 const prompts = [
-  { key: 'marketTrading', label: 'What is the market trading today?', placeholder: 'e.g., Risk-off tone, S&P down 1.2% led by tech...' },
-  { key: 'assetClassMoved', label: 'Which asset class moved the most?', placeholder: 'e.g., Treasuries sold off, 10Y up 8bps...' },
-  { key: 'changedVsYesterday', label: 'What changed vs yesterday?', placeholder: 'e.g., Fed rhetoric shifted hawkish after minutes...' },
-  { key: 'alreadyPricedIn', label: 'What was already priced in?', placeholder: 'e.g., NFP miss was already expected after ADP miss...' },
-  { key: 'myView', label: 'What is my view?', placeholder: 'e.g., Still bearish duration, adding to short bond position...' },
-  { key: 'watchTomorrow', label: 'What should I watch tomorrow?', placeholder: 'e.g., JOLTS data, Fed speak, oil inventory...' },
+  { key: 'marketTrading', labelKey: 'notes.prompt1', placeholderKey: 'notes.placeholder1' },
+  { key: 'assetClassMoved', labelKey: 'notes.prompt2', placeholderKey: 'notes.placeholder2' },
+  { key: 'changedVsYesterday', labelKey: 'notes.prompt3', placeholderKey: 'notes.placeholder3' },
+  { key: 'alreadyPricedIn', labelKey: 'notes.prompt4', placeholderKey: 'notes.placeholder4' },
+  { key: 'myView', labelKey: 'notes.prompt5', placeholderKey: 'notes.placeholder5' },
+  { key: 'watchTomorrow', labelKey: 'notes.prompt7', placeholderKey: 'notes.placeholder7' },
 ]
 
 export default function DailyNoteForm({ existingNote, onSave, isSaving }: DailyNoteFormProps) {
+  const { t } = useLanguage()
   const today = new Date().toISOString().split('T')[0]
   const [form, setForm] = useState({
     date: existingNote?.date ?? today,
@@ -58,12 +60,12 @@ export default function DailyNoteForm({ existingNote, onSave, isSaving }: DailyN
       {prompts.map(p => (
         <div key={p.key}>
           <label className="block text-sm font-medium text-foreground mb-1.5">
-            {p.label}
+            {t(p.labelKey)}
           </label>
           <textarea
             value={form[p.key as keyof typeof form] as string}
             onChange={e => handleChange(p.key, e.target.value)}
-            placeholder={p.placeholder}
+            placeholder={t(p.placeholderKey)}
             rows={3}
             className="w-full bg-card border border-border rounded-md px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-accent resize-none"
           />
@@ -72,7 +74,7 @@ export default function DailyNoteForm({ existingNote, onSave, isSaving }: DailyN
 
       <div>
         <label className="block text-sm font-medium text-foreground mb-1.5">
-          Confidence level (1-5)
+          {t('notes.prompt6')} (1-5)
         </label>
         <div className="flex items-center gap-3">
           <input
@@ -99,7 +101,7 @@ export default function DailyNoteForm({ existingNote, onSave, isSaving }: DailyN
         className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
       >
         {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-        {isSaving ? 'Saving...' : 'Save Note'}
+        {isSaving ? t('common.loading') : t('notes.save')}
       </button>
     </form>
   )

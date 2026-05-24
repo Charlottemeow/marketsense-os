@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import { AlertTriangle } from "lucide-react"
 
 interface MacroCardProps {
@@ -47,6 +50,7 @@ export function MacroCard({
   change1Y,
   lastUpdated,
 }: MacroCardProps) {
+  const { t } = useLanguage()
   const stale = isStale(lastUpdated)
 
   return (
@@ -57,7 +61,7 @@ export function MacroCard({
       {stale && (
         <div className="absolute top-3 right-3 flex items-center gap-1 text-data-xs text-warning">
           <AlertTriangle className="w-3 h-3" />
-          Stale
+          {t('macro.stale')}
         </div>
       )}
       <div className="flex items-center gap-2 mb-2">
@@ -69,12 +73,12 @@ export function MacroCard({
         {unit && <span className="text-data-sm text-muted ml-1">{unit}</span>}
       </div>
       <div className="space-y-1 pt-3 border-t border-border">
-        <ChangeBadge value={change1M} label="1M" />
-        <ChangeBadge value={change3M} label="3M" />
-        <ChangeBadge value={change1Y} label="1Y" />
+        <ChangeBadge value={change1M} label={t('macro.1mChange')} />
+        <ChangeBadge value={change3M} label={t('macro.3mChange')} />
+        <ChangeBadge value={change1Y} label={t('macro.1yChange')} />
       </div>
       <div className="text-data-xs text-muted/50 mt-3 pt-2 border-t border-border">
-        Updated: {lastUpdated}
+        {t('macro.lastUpdated')}: {lastUpdated}
       </div>
     </div>
   )

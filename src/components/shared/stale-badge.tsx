@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import {
   Tooltip,
   TooltipContent,
@@ -13,6 +14,7 @@ interface StaleBadgeProps {
 }
 
 export function StaleBadge({ lastFetchTime }: StaleBadgeProps) {
+  const { t } = useLanguage()
   return (
     <TooltipProvider>
       <Tooltip>
@@ -27,14 +29,14 @@ export function StaleBadge({ lastFetchTime }: StaleBadgeProps) {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-warning opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-warning" />
             </span>
-            Data may be delayed
+            {t("stale.title")}
           </span>
         </TooltipTrigger>
         <TooltipContent>
           {lastFetchTime ? (
-            <span>Last fetched: {lastFetchTime}</span>
+            <span>{t("stale.description")} {lastFetchTime}</span>
           ) : (
-            <span>Last fetch time unavailable</span>
+            <span>{t("stale.noData")}</span>
           )}
         </TooltipContent>
       </Tooltip>

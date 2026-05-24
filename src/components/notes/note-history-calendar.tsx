@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface NoteEntry {
@@ -27,6 +28,7 @@ export default function NoteHistoryCalendar({
   currentMonth: externalMonth,
   onMonthChange,
 }: NoteHistoryCalendarProps) {
+  const { t } = useLanguage()
   const [internalMonth, setInternalMonth] = useState(new Date())
   const currentMonth = externalMonth ?? internalMonth
 
@@ -126,7 +128,7 @@ export default function NoteHistoryCalendar({
       </div>
 
       <div className="mt-4 text-xs text-muted">
-        {notes.length} note{notes.length !== 1 ? 's' : ''} this month
+        {notes.length} {t('notes.history')}
       </div>
     </div>
   )

@@ -3,6 +3,7 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import { NewsFilters } from "@/components/news/news-filters"
 import { NewsCard } from "@/components/news/news-card"
 import { EconomicCalendarTable } from "@/components/news/economic-calendar-table"
@@ -84,6 +85,7 @@ const mockEarnings = [
 ]
 
 export default function NewsPage() {
+  const { t } = useLanguage()
   const [activeFilter, setActiveFilter] = useState("all")
 
   const filteredNews = mockNewsItems.filter(
@@ -94,14 +96,14 @@ export default function NewsPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-foreground">News &amp; Events</h1>
+          <h1 className="text-lg font-semibold text-foreground">{t('news.title')}</h1>
           <p className="text-xs text-muted mt-0.5">
             Economic calendar, earnings, and curated headlines
           </p>
         </div>
         <button className="flex items-center gap-2 px-4 py-2 rounded-md bg-accent/10 text-accent text-sm font-medium hover:bg-accent/20 transition-colors">
           <Sparkles className="w-4 h-4" />
-          Convert to Deep Dive
+          {t('news.convertToDeepDive')}
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -112,14 +114,14 @@ export default function NewsPage() {
         <div className="space-y-6">
           <div>
             <h2 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-              Economic Calendar
+              {t('news.economicCalendar')}
             </h2>
             <EconomicCalendarTable />
           </div>
 
           <div className="rounded-lg border border-border bg-card p-4 card-glow">
             <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-              Upcoming Earnings
+              {t('news.earningsCalendar')}
             </h3>
             <div className="space-y-2">
               <div className="grid grid-cols-4 text-data-xs text-muted font-medium px-2 pb-2 border-b border-border">
@@ -145,7 +147,7 @@ export default function NewsPage() {
 
         <div>
           <h2 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-            RSS Feed / Curated Headlines
+            {t('news.rssFeed')}
           </h2>
           <div className="space-y-3">
             {filteredNews.map((item, i) => (

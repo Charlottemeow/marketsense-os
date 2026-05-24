@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 
 interface CryptoItem {
   label: string
@@ -36,10 +39,12 @@ function CryptoCard({ item }: { item: CryptoItem }) {
 }
 
 export function CryptoPanel() {
+  const { t } = useLanguage()
+
   return (
     <div>
       <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-        Crypto
+        {t('home.crypto')}
       </h3>
       <div className="grid grid-cols-2 gap-2">
         {mockCrypto.map((item) => (

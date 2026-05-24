@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import { Shield, TrendingUp, TrendingDown, Minus, AlertTriangle } from "lucide-react"
 
 type Regime = "risk-on" | "risk-off" | "mixed" | "crisis"
@@ -12,27 +15,23 @@ interface RegimeData {
   explanation: string
 }
 
-const regimeConfig: Record<Regime, { label: string; icon: React.ElementType; color: string; bg: string }> = {
+const regimeConfig: Record<Regime, { icon: React.ElementType; color: string; bg: string }> = {
   "risk-on": {
-    label: "Risk On",
     icon: TrendingUp,
     color: "text-positive",
     bg: "bg-positive/10",
   },
   "risk-off": {
-    label: "Risk Off",
     icon: TrendingDown,
     color: "text-negative",
     bg: "bg-negative/10",
   },
   mixed: {
-    label: "Mixed",
     icon: Minus,
     color: "text-warning",
     bg: "bg-warning/10",
   },
   crisis: {
-    label: "Crisis",
     icon: AlertTriangle,
     color: "text-negative",
     bg: "bg-negative/10",
@@ -56,7 +55,18 @@ const mockRegimeData: RegimeData = {
     "Markets are pricing a 'no landing' scenario where growth remains resilient but inflation stays sticky. Equities are supported by AI exuberance, but the FX and commodity signals suggest caution. The regime is best characterized as mixed — partial de-risking advised.",
 }
 
+function getRegimeLabel(regime: Regime, t: (key: string) => string): string {
+  const map: Record<Regime, string> = {
+    "risk-on": t('regime.risk_on'),
+    "risk-off": t('regime.risk_off'),
+    "mixed": t('regime.mixed'),
+    "crisis": "Crisis",
+  }
+  return map[regime]
+}
+
 export function MarketThemeCard() {
+  const { t } = useLanguage()
   const data = mockRegimeData
   const cfg = regimeConfig[data.regime]
   const Icon = cfg.icon
@@ -65,7 +75,7 @@ export function MarketThemeCard() {
     <div className="rounded-lg border border-border bg-card p-5 card-glow animate-fade-in">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xs font-medium uppercase tracking-wider text-muted">
-          Market Theme
+          {t('home.marketTheme')}
         </h3>
         <div
           className={cn(
@@ -75,7 +85,7 @@ export function MarketThemeCard() {
           )}
         >
           <Icon className="w-3.5 h-3.5" />
-          {cfg.label}
+          {getRegimeLabel(data.regime, t)}
           <span className="ml-1 opacity-70">{data.confidence}%</span>
         </div>
       </div>
@@ -88,7 +98,7 @@ export function MarketThemeCard() {
         <div>
           <h4 className="text-data-xs text-positive mb-2 flex items-center gap-1.5">
             <TrendingUp className="w-3 h-3" />
-            Supporting
+            {t('theme.supporting')}
           </h4>
           <ul className="space-y-1.5">
             {data.supporting_indicators.map((s, i) => (
@@ -101,7 +111,7 @@ export function MarketThemeCard() {
         <div>
           <h4 className="text-data-xs text-negative mb-2 flex items-center gap-1.5">
             <TrendingDown className="w-3 h-3" />
-            Conflicting
+            {t('theme.conflicting')}
           </h4>
           <ul className="space-y-1.5">
             {data.conflicting_indicators.map((s, i) => (

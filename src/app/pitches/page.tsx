@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/context'
 import { cn } from '@/lib/utils'
 import { Plus, ArrowUpRight } from 'lucide-react'
 
@@ -62,11 +63,12 @@ const badgeColors: Record<string, string> = {
 }
 
 export default function PitchesPage() {
+  const { t } = useLanguage()
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-display text-foreground">Stock Pitches</h1>
+          <h1 className="text-2xl font-display text-foreground">{t('pitch.title')}</h1>
           <p className="text-sm text-muted mt-1">Formal investment theses with variant views</p>
         </div>
         <Link
@@ -74,7 +76,7 @@ export default function PitchesPage() {
           className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
         >
           <Plus className="w-4 h-4" />
-          New Pitch
+          {t('pitch.new')}
         </Link>
       </div>
 

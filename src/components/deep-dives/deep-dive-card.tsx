@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import { ArrowRight, Calendar } from 'lucide-react'
 
 interface DeepDive {
@@ -17,6 +18,8 @@ interface DeepDiveCardProps {
 }
 
 export default function DeepDiveCard({ deepDive }: DeepDiveCardProps) {
+  const { t } = useLanguage()
+
   return (
     <Link
       href={`/deep-dives/${deepDive.id}`}
@@ -35,7 +38,7 @@ export default function DeepDiveCard({ deepDive }: DeepDiveCardProps) {
             {deepDive.eventDescription}
           </p>
           <div className="mt-3 flex items-center gap-2">
-            <span className="text-xs text-muted">1st order cause:</span>
+            <span className="text-xs text-muted">{t('dive.firstOrder')}:</span>
             <span className="text-xs text-foreground truncate">{deepDive.firstOrderCause}</span>
           </div>
         </div>

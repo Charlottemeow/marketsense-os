@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/context'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface UpdateLog {
@@ -21,6 +22,7 @@ interface UpdateLogsProps {
 const PAGE_SIZE = 10
 
 export default function UpdateLogs({ logs }: UpdateLogsProps) {
+  const { t } = useLanguage()
   const [page, setPage] = useState(1)
   const totalPages = Math.ceil(logs.length / PAGE_SIZE)
   const start = (page - 1) * PAGE_SIZE
@@ -33,9 +35,9 @@ export default function UpdateLogs({ logs }: UpdateLogsProps) {
           <thead>
             <tr className="border-b border-border">
               <th className="text-left text-xs font-medium text-muted uppercase tracking-wider px-3 py-2">Time</th>
-              <th className="text-left text-xs font-medium text-muted uppercase tracking-wider px-3 py-2">Provider</th>
+              <th className="text-left text-xs font-medium text-muted uppercase tracking-wider px-3 py-2">{t('admin.provider')}</th>
               <th className="text-left text-xs font-medium text-muted uppercase tracking-wider px-3 py-2">Action</th>
-              <th className="text-left text-xs font-medium text-muted uppercase tracking-wider px-3 py-2">Status</th>
+              <th className="text-left text-xs font-medium text-muted uppercase tracking-wider px-3 py-2">{t('admin.status')}</th>
               <th className="text-left text-xs font-medium text-muted uppercase tracking-wider px-3 py-2">Duration</th>
               <th className="text-left text-xs font-medium text-muted uppercase tracking-wider px-3 py-2">Message</th>
             </tr>
@@ -61,7 +63,7 @@ export default function UpdateLogs({ logs }: UpdateLogsProps) {
             {visibleLogs.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-3 py-8 text-center text-muted text-sm">
-                  No update logs yet
+                  {t('admin.updateLogs')}
                 </td>
               </tr>
             )}
@@ -72,7 +74,7 @@ export default function UpdateLogs({ logs }: UpdateLogsProps) {
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-4">
           <span className="text-xs text-muted">
-            Page {page} of {totalPages}
+            {t('pitch.step')} {page} {t('pitch.of')} {totalPages}
           </span>
           <div className="flex items-center gap-2">
             <button

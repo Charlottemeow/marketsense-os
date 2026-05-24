@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 
 interface NewsFiltersProps {
   activeFilter: string
@@ -7,18 +10,20 @@ interface NewsFiltersProps {
 }
 
 const filters = [
-  { id: "all", label: "All" },
-  { id: "macro", label: "Macro" },
-  { id: "us-equity", label: "US Equity" },
-  { id: "hk-china", label: "HK/China" },
-  { id: "fx", label: "FX" },
-  { id: "rates", label: "Rates" },
-  { id: "commodity", label: "Commodity" },
-  { id: "crypto", label: "Crypto" },
-  { id: "company", label: "Company" },
+  { id: "all", labelKey: "news.all" },
+  { id: "macro", labelKey: "news.macro" },
+  { id: "us-equity", labelKey: "news.usEquity" },
+  { id: "hk-china", labelKey: "news.hkChina" },
+  { id: "fx", labelKey: "news.fx" },
+  { id: "rates", labelKey: "news.rates" },
+  { id: "commodity", labelKey: "news.commodity" },
+  { id: "crypto", labelKey: "news.crypto" },
+  { id: "company", labelKey: "news.company" },
 ]
 
 export function NewsFilters({ activeFilter, onFilterChange }: NewsFiltersProps) {
+  const { t } = useLanguage()
+
   return (
     <div className="flex flex-wrap gap-1.5">
       {filters.map((filter) => (
@@ -32,7 +37,7 @@ export function NewsFilters({ activeFilter, onFilterChange }: NewsFiltersProps) 
               : "bg-card border border-border text-muted hover:text-foreground hover:border-foreground/30"
           )}
         >
-          {filter.label}
+          {t(filter.labelKey)}
         </button>
       ))}
     </div>

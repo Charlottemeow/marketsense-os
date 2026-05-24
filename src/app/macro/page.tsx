@@ -1,6 +1,7 @@
 // MOCK DATA FOR DEVELOPMENT
 "use client"
 
+import { useLanguage } from "@/lib/i18n/context"
 import { MacroCard } from "@/components/macro/macro-card"
 import { YieldCurveChart } from "@/components/macro/yield-curve-chart"
 import { MacroChart } from "@/components/macro/macro-chart"
@@ -47,10 +48,11 @@ const mockMacroCards = [
 ]
 
 export default function MacroPage() {
+  const { t } = useLanguage()
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h1 className="text-lg font-semibold text-foreground">Macro Dashboard</h1>
+        <h1 className="text-lg font-semibold text-foreground">{t('macro.title')}</h1>
         <p className="text-xs text-muted mt-0.5">
           FRED macro series, inflation &amp; employment trends
         </p>
@@ -65,7 +67,7 @@ export default function MacroPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <YieldCurveChart />
         <MacroChart
-          title="CPI vs Core CPI (YoY %)"
+          title={t('macro.cpiChart')}
           data={mockCpiData}
           dataKeys={[
             { key: "cpi", color: "#00D4FF", name: "CPI" },
@@ -75,7 +77,7 @@ export default function MacroPage() {
       </div>
 
       <MacroChart
-        title="Unemployment Rate vs Nonfarm Payrolls"
+        title={t('macro.employmentChart')}
         data={mockEmploymentData}
         dataKeys={[
           { key: "unemployment", color: "#EF4444", name: "Unemployment %" },
@@ -85,7 +87,7 @@ export default function MacroPage() {
 
       <div className="rounded-lg border border-border bg-card p-5 card-glow">
         <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-          Macro Regime Assessment
+          {t('macro.regimeExplanation')}
         </h3>
         <div className="space-y-2 text-sm text-foreground/80 leading-relaxed">
           <p>

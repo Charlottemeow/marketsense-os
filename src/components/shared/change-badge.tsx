@@ -1,4 +1,7 @@
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import { TrendingUp, TrendingDown, Minus } from "lucide-react"
 
 interface ChangeBadgeProps {
@@ -8,6 +11,7 @@ interface ChangeBadgeProps {
 }
 
 export function ChangeBadge({ value, size = "md", showIcon = true }: ChangeBadgeProps) {
+  const { t } = useLanguage()
   const isPositive = value > 0
   const isNegative = value < 0
   const isZero = value === 0
@@ -30,6 +34,8 @@ export function ChangeBadge({ value, size = "md", showIcon = true }: ChangeBadge
     ? "px-1.5 py-0.5 text-data-xs gap-1"
     : "px-2 py-1 text-data-sm gap-1.5"
 
+  const directionLabel = isPositive ? t("change.up") : isNegative ? t("change.down") : t("change.flat")
+
   return (
     <span
       className={cn(
@@ -38,6 +44,7 @@ export function ChangeBadge({ value, size = "md", showIcon = true }: ChangeBadge
         colorClass,
         sizeClasses
       )}
+      aria-label={`${directionLabel} ${Math.abs(value).toFixed(2)}%`}
     >
       {showIcon && <Icon className={cn("shrink-0", size === "sm" ? "h-2.5 w-2.5" : "h-3 w-3")} />}
       <span>{isPositive ? "+" : ""}{value.toFixed(2)}%</span>

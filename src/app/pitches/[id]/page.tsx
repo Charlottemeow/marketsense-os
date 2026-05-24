@@ -2,6 +2,7 @@
 
 import { useState, use } from 'react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/context'
 import PitchWizard from '@/components/pitches/pitch-wizard'
 import { ArrowLeft } from 'lucide-react'
 
@@ -25,6 +26,7 @@ const MOCK_PITCH = {
 }
 
 export default function PitchDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useLanguage()
   const resolved = use(params)
   const [isSaving, setIsSaving] = useState(false)
 
@@ -43,9 +45,9 @@ export default function PitchDetailPage({ params }: { params: Promise<{ id: stri
           className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to pitches
+          {t('pitch.back')}
         </Link>
-        <h1 className="text-2xl font-display text-foreground mt-2">Edit Pitch: {MOCK_PITCH.companyName} ({MOCK_PITCH.ticker})</h1>
+        <h1 className="text-2xl font-display text-foreground mt-2">{t('pitch.edit')}: {MOCK_PITCH.companyName} ({MOCK_PITCH.ticker})</h1>
         <p className="text-sm text-muted mt-1">ID: {resolved.id}</p>
       </div>
 

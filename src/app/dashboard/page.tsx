@@ -3,6 +3,7 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import { AssetTabs } from "@/components/market/asset-tabs"
 import { PriceTable } from "@/components/market/price-table"
 import { Search, AlertTriangle, X } from "lucide-react"
@@ -12,6 +13,7 @@ const periodFilters = ["1D", "1W", "1M", "YTD"] as const
 const staleAssets = ["EFA", "EEM"]
 
 export default function MarketDashboardPage() {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState("equity")
   const [activePeriod, setActivePeriod] = useState<string>("1D")
   const [searchInput, setSearchInput] = useState("")
@@ -19,7 +21,7 @@ export default function MarketDashboardPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h1 className="text-lg font-semibold text-foreground">Markets</h1>
+        <h1 className="text-lg font-semibold text-foreground">{t('market.title')}</h1>
         <p className="text-xs text-muted mt-0.5">
           Real-time and historical prices across asset classes
         </p>
@@ -29,7 +31,7 @@ export default function MarketDashboardPage() {
         <AlertTriangle className="w-4 h-4 text-warning shrink-0" />
         <div className="flex-1">
           <span className="text-xs text-warning">
-            Stale data warning: Data for {staleAssets.join(", ")} has not updated in over 5 minutes.
+            {t('market.staleWarning')} — {staleAssets.join(", ")} has not updated in over 5 minutes.
             Last refresh: {new Date().toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" })} ET
           </span>
         </div>
@@ -63,7 +65,7 @@ export default function MarketDashboardPage() {
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted" />
             <input
               type="text"
-              placeholder="Add asset (e.g. AAPL)"
+              placeholder={t('market.search')}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               className="w-48 h-8 rounded-md border border-border bg-card pl-8 pr-3 text-xs text-foreground placeholder:text-muted outline-none focus:border-accent transition-colors"
@@ -75,7 +77,7 @@ export default function MarketDashboardPage() {
       <PriceTable />
 
       <div className="text-data-xs text-muted text-right">
-        Data delayed 15 min for NYSE/NASDAQ. Updated: {new Date().toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" })} ET
+        {t('market.staleWarning')}. Updated: {new Date().toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" })} ET
       </div>
     </div>
   )

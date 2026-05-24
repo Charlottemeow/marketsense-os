@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 import { MiniSparkline } from "@/components/market/mini-sparkline"
 
 interface IndexData {
@@ -54,10 +57,12 @@ function IndexCard({ index }: { index: IndexData }) {
 }
 
 export function GlobalSnapshot() {
+  const { t } = useLanguage()
+
   return (
     <div>
       <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-        Global Market Snapshot
+        {t('home.globalSnapshot')}
       </h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {mockIndices.map((index) => (

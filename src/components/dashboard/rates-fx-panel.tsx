@@ -1,5 +1,8 @@
 // MOCK DATA FOR DEVELOPMENT
+"use client"
+
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n/context"
 
 interface RateFxItem {
   label: string
@@ -37,10 +40,12 @@ function RateFxCard({ item }: { item: RateFxItem }) {
 }
 
 export function RatesFxPanel() {
+  const { t } = useLanguage()
+
   return (
     <div>
       <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-        Rates &amp; FX
+        {t('home.ratesFx')}
       </h3>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2">
         {mockRatesFx.map((item) => (

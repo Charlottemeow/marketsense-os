@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/context'
 import DailyNoteForm from '@/components/notes/daily-note-form'
 import NoteHistoryCalendar from '@/components/notes/note-history-calendar'
 import { ArrowUpRight } from 'lucide-react'
@@ -15,6 +16,7 @@ const MOCK_NOTES = [
 ]
 
 export default function NotesPage() {
+  const { t } = useLanguage()
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
 
@@ -30,14 +32,14 @@ export default function NotesPage() {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-display text-foreground">Daily Notes</h1>
+          <h1 className="text-2xl font-display text-foreground">{t('notes.title')}</h1>
           <p className="text-sm text-muted mt-1">Structured market journal</p>
         </div>
         <Link
           href="/notes/why-did-it-move"
           className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-md text-sm text-foreground hover:bg-card-hover transition-colors"
         >
-          Why Did It Move
+          {t('notes.whyMove')}
           <ArrowUpRight className="w-4 h-4" />
         </Link>
       </div>

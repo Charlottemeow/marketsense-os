@@ -3,6 +3,7 @@
 
 import Link from "next/link"
 import { PenSquare } from "lucide-react"
+import { useLanguage } from "@/lib/i18n/context"
 import { MarketThemeCard } from "@/components/dashboard/market-theme-card"
 import { GlobalSnapshot } from "@/components/dashboard/global-snapshot"
 import { HeatmapGrid } from "@/components/dashboard/heatmap-grid"
@@ -38,11 +39,12 @@ function ImportanceBadge({ importance }: { importance: "high" | "medium" | "low"
 }
 
 export default function HomePage() {
+  const { t } = useLanguage()
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-foreground">Daily Dashboard</h1>
+          <h1 className="text-lg font-semibold text-foreground">{t('home.title')}</h1>
           <p className="text-xs text-muted mt-0.5">
             {new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
           </p>
@@ -52,7 +54,7 @@ export default function HomePage() {
           className="flex items-center gap-2 px-4 py-2 rounded-md bg-accent text-accent-foreground text-sm font-medium hover:opacity-90 transition-opacity"
         >
           <PenSquare className="w-4 h-4" />
-          Write Today&apos;s Market Sense Note
+          {t('home.writeNote')}
         </Link>
       </div>
 
@@ -74,7 +76,7 @@ export default function HomePage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="rounded-lg border border-border bg-card p-4 card-glow">
           <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-            Economic Events Today
+            {t('home.economicEvents')}
           </h3>
           <div className="space-y-2">
             {mockEventsToday.map((evt, i) => (
@@ -96,7 +98,7 @@ export default function HomePage() {
 
         <div className="rounded-lg border border-border bg-card p-4 card-glow">
           <h3 className="text-xs font-medium uppercase tracking-wider text-muted mb-3">
-            News Feed
+            {t('home.newsFeed')}
           </h3>
           <div className="space-y-2">
             {mockNewsFeed.map((news, i) => (
